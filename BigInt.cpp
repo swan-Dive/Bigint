@@ -6,13 +6,13 @@
 
 
 class BigInteger {
-  const int base = 1'000'000;
+  const int base = 1'000'000'000;
 
  private:
   std::vector<int> big_int;
   size_t size;
   void Swap(BigInteger& a, BigInteger& b);
-  void GetRidOfZero(BigInteger & a);
+  void GetRidOfZero(BigInteger& a);
 
  public:
   BigInteger(const BigInteger& b) {  // copy
@@ -20,7 +20,7 @@ class BigInteger {
     for (int i = 0; i < b.big_int.size(); ++i) {
       big_int.push_back(b.big_int[i]);
     }
-    std::cout << " copied! " << std::endl;
+//    std::cout << " copied! " << std::endl;
   }
 
   BigInteger(std::string s) {
@@ -50,7 +50,7 @@ class BigInteger {
 
   BigInteger& operator+=(const BigInteger& add) {
     int carry = 0;
-    for (int i = 0; i < std::max(big_int.size(), add.big_int.size()) || carry;
+    for (size_t i = 0; i < std::max(big_int.size(), add.big_int.size()) || carry;
          ++i) {
       if (i == big_int.size()) big_int.push_back(0);
       big_int[i] += carry + (i < add.big_int.size() ? add.big_int[i] : 0);
@@ -98,7 +98,7 @@ class BigInteger {
     
   BigInteger& operator=(const BigInteger& b) {  // assign
     BigInteger copy = b;
-    std::cout << " присвоили " << std::endl;
+   // std::cout << " присвоили " << std::endl;
     Swap(*this, copy);
     return *this;
   }
@@ -150,13 +150,29 @@ BigInteger operator/(const BigInteger& a, long long b) {
 }
 
 int main() {
-  BigInteger a = 123;
-  BigInteger b = a + 5;  // works just fine
-  BigInteger c = a * 5;  // 0_o 
-  a = a / 2;  // works just fine
+  BigInteger a("12345678901234567890");
+  BigInteger b = 123456789; 
+  BigInteger c = a + b;
+  std::cout << "a = ";
   a.Print();
+  std::cout << "b = ";
   b.Print();
+  std::cout << "a + b = c = ";
+  c.Print(); 
+  c -= b;
+  std::cout << "c - b = ";
   c.Print();
-  
+  std::cout << "assigning c - 4000000000000" << '\n' << "c = ";
+  c = 4000000000000;
+  c.Print();
+  c *= 20;
+  std::cout << "c * 20 = ";
+  c.Print();
+  std::cout << "initial c = ";
+  c = c / 20;
+  c.Print();
+  std::cout << " c - 123456789 = ";
+  BigInteger d = c - 123456789;
+  d.Print();
   return 0;
 }
