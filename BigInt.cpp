@@ -10,19 +10,18 @@ class BigInteger {
 
  private:
   std::vector<int> big_int;
-  size_t size;
   void Swap(BigInteger& a, BigInteger& b);
   void GetRidOfZero(BigInteger& a);
 
  public:
   BigInteger(const BigInteger& b) {  // copy
-    big_int.clear();
     for (int i = 0; i < b.big_int.size(); ++i) {
       big_int.push_back(b.big_int[i]);
     }
-//    std::cout << " copied! " << std::endl;
   }
-
+  BigInteger() {
+    big_int.push_back(0);
+  };
   BigInteger(std::string s) {
     for (int i = (int)s.length(); i > 0; i -= 9)
       if (i < 9)
@@ -40,7 +39,16 @@ class BigInteger {
 
   ~BigInteger() = default;
 
- 
+  int CountNum() {
+    int result = (big_int.size() - 1) * 9;
+    int temp = big_int[big_int.size() - 1];
+    while (temp) {
+      ++result;
+      temp/=10;
+    }
+    return result;
+  }
+
   void Print() {
     printf("%d", big_int.empty() ? 0 : big_int.back());
     for (int i = (int)big_int.size() - 2; i >= 0; --i)
@@ -94,11 +102,10 @@ class BigInteger {
     }
     GetRidOfZero(*this);
     return *this;
-  }
+  }  
     
   BigInteger& operator=(const BigInteger& b) {  // assign
     BigInteger copy = b;
-   // std::cout << " присвоили " << std::endl;
     Swap(*this, copy);
     return *this;
   }
@@ -112,6 +119,14 @@ class BigInteger {
         return false;
     }
     return true;
+  }
+
+
+  BigInteger operator%=( const BigInteger& divider) {
+    if (*this == divider || (divider.big_int[0] == 0 && divider.big_int.size() == 1)) {
+      return BigInteger(0);
+    }
+
   }
 
 };
@@ -149,6 +164,113 @@ BigInteger operator/(const BigInteger& a, long long b) {
   return copy;
 }
 
+class BigDouble {
+private:
+  BigInteger numenator;
+  BigInteger denumenator;
+
+  void Swap(BigDouble& a, BigDouble& b) {
+    std::swap(a.numenator, b.numenator);
+    std::swap(a.denumenator, b.denumenator);
+  }  
+public:
+  BigDouble(BigInteger numenator_, BigInteger denumenator_) : numenator(numenator_), denumenator(denumenator_) {};
+  BigDouble(std::string numenator_, std::string denumenator_) {
+    BigInteger num(numenator_);
+    BigInteger denum(denumenator_);
+    numenator = num;
+    denumenator = denum;
+  };
+  BigDouble(BigInteger numenator_) : numenator(numenator_), denumenator(1) {};
+  BigDouble(long long num) : numenator(num), denumenator(1) {};
+  BigDouble(const BigDouble& num) { // copy
+    numenator = num.numenator;
+    denumenator = num.denumenator;
+  }
+  BigDouble& operator=(const BigDouble& b) {  // assign
+    BigDouble copy = b;
+    Swap(*this, copy);
+    return *this;
+  }
+
+
+  ~BigDouble() = default;
+
+  void Print();
+
+  BigDouble& operator+=(const BigDouble& num) {
+    numenator *= num.denumenator;
+    numenator += (denumenator * num.numenator);
+    denumenator *= num.denumenator;
+    return *this;
+  }
+
+  BigDouble& operator-=(const BigDouble& num) {
+    numenator *= num.denumenator;
+    denumenator *= num.denumenator;
+    numenator -= (denumenator * num.numenator);
+    return *this;
+  }
+
+  BigDouble& operator*=(const BigDouble& num) {
+    numenator *= num.numenator;
+    denumenator *= num.denumenator;
+    return *this;
+  }
+
+  BigDouble& operator/=(const BigDouble& num) {
+    numenator *= num.denumenator;
+    denumenator *= num.numenator;
+    return *this;
+  }
+
+  
+};
+
+
+void BigDouble::Print() {
+  int dashes = std::max(numenator.CountNum(), denumenator.CountNum());
+  for (int i = (dashes - numenator.CountNum()) / 2; i > 0; --i ) {
+    std::cout << " ";
+  }
+  numenator.Print();
+  for (int i = 0; i < dashes; ++i) {
+    std::cout << "-";
+  }
+  std::cout << std::endl;
+  for (int i = (dashes - denumenator.CountNum()) / 2; i > 0; --i ) {
+    std::cout << " ";
+  }
+  denumenator.Print();
+  std::cout << std::endl;
+}
+
+BigDouble operator+(const BigDouble& a, const BigDouble& b) {  // Возвращаем копию объекта, а не ссылку, так как мы создаем новый объект
+  BigDouble copy = a;
+  copy += b;
+  return copy;  // rvo
+}
+
+BigDouble operator-(const BigDouble& a, const BigDouble& b) {
+  BigDouble copy = a;
+  copy -= b;
+  return copy;
+}
+
+BigDouble operator*(const BigDouble& a, const BigDouble& b) {
+  BigDouble copy = a;
+  copy *= b;
+  return copy;
+}
+
+BigDouble operator/(const BigDouble& a, const BigDouble& b) {
+  BigDouble copy = a;
+  copy /= b;
+  return copy;
+}
+
+
+
 int main() {
   BigInteger a("12345678901234567890");
   BigInteger b = 123456789; 
@@ -174,5 +296,13 @@ int main() {
   std::cout << " c - 123456789 = ";
   BigInteger d = c - 123456789;
   d.Print();
+  std::cout << '\n' << '\n' << '\n' << '\n';
+
+  { // BigDouble
+  BigDouble a("55124121","1124812094186193489125071326");
+  BigDouble b("6592193414","1254897351531537834");
+  a /= b;
+  a.Print();
+  }
   return 0;
 }
