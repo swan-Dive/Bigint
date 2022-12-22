@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/BigInt.dir/main.cpp.o -o BigInt  header_folder/libBigInteger.a 
