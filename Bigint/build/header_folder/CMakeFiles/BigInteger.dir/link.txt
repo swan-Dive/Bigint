@@ -1,2 +1,0 @@
-/usr/bin/ar qc libBigInteger.a CMakeFiles/BigInteger.dir/BigInt.cpp.o
-/usr/bin/ranlib libBigInteger.a

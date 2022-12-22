@@ -1,6 +1,0 @@
-/home/nikita/Документы/informatics/c_homework/Bigint/build/CMakeFiles/MainBigInt.dir
-/home/nikita/Документы/informatics/c_homework/Bigint/build/CMakeFiles/edit_cache.dir
-/home/nikita/Документы/informatics/c_homework/Bigint/build/CMakeFiles/rebuild_cache.dir
-/home/nikita/Документы/informatics/c_homework/Bigint/build/header_folder/CMakeFiles/BigInteger.dir
-/home/nikita/Документы/informatics/c_homework/Bigint/build/header_folder/CMakeFiles/edit_cache.dir
-/home/nikita/Документы/informatics/c_homework/Bigint/build/header_folder/CMakeFiles/rebuild_cache.dir
