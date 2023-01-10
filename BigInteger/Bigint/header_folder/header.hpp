@@ -72,6 +72,10 @@ class BigDouble {
     BigDouble operator-=(const BigDouble&);
     BigDouble operator/=(const BigDouble&);
     BigDouble operator*=(const BigDouble&);
+    BigDouble& operator++();
+    BigDouble& operator--();
+    BigDouble operator++(int);
+    BigDouble operator--(int);
 
 };
 
